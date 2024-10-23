@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +22,9 @@ public class AuthenticatedService implements UserDetailsService{
    @Autowired
     private LoginsRepository repository;
     
+    @Value("key.auth.token")
+    private String key;
+    
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,7 +36,7 @@ public class AuthenticatedService implements UserDetailsService{
     }
        public String setToken(Logins user){
         try {
-            Algorithm algorithm = Algorithm.HMAC256("my-secret");
+            Algorithm algorithm = Algorithm.HMAC256(key);
             String token = JWT.create()
             .withIssuer("integration-nextjs")
             .withSubject(user.getEmail())
@@ -49,7 +53,7 @@ public class AuthenticatedService implements UserDetailsService{
     }
     public String validateToken(String token){
         try {
-            Algorithm algorithm = Algorithm.HMAC256("my-secret");
+            Algorithm algorithm = Algorithm.HMAC256(key);
             return JWT.require(algorithm).withIssuer("integration-nextjs")
             .build()
             .verify(token)
