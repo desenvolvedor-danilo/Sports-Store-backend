@@ -1,5 +1,8 @@
 package com.dkmo.integrationnextjs.dto;
 
-public record TokenDto(String token) {
+import lombok.Builder;
+
+@Builder
+public record TokenDto(String token,String refreshToken) {
     
 }

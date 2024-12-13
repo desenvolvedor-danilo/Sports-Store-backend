@@ -1,4 +1,5 @@
 package com.dkmo.integrationnextjs.models;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -7,7 +8,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.dkmo.integrationnextjs.enums.Roles;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,23 +22,25 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+
 @Table(name = "LOGINS")
 public class Logins implements UserDetails{
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "logins_id")
     private Long id;
     private String email; 
     private String name;
-    private String pass;
-    private String userna;
+    private String usuario;
+    private String senha;
     private boolean verifiedAccount;
     private String token;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "USER_ID")
     private UserRegister userRegister;
     private String code;
     private Roles role;
-
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -52,34 +56,38 @@ public class Logins implements UserDetails{
         );
         
     }
-    
+
     @Override
     public String getPassword() {
-        return pass;
+        return senha;
     }
-    
+
     @Override
     public String getUsername() {
-        return userna;
+        return usuario;
     }
-    
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-    
+
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-    
+
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-    
+
     @Override
     public boolean isEnabled() {
         return true;
     }
+    
 }
+
+
+

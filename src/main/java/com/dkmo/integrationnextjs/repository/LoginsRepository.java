@@ -6,5 +6,5 @@ import com.dkmo.integrationnextjs.models.Logins;
 public interface LoginsRepository extends JpaRepository<Logins,Long>{
     public Logins findByEmail(String email);
     public Logins findByCode(String code);
-    public Logins findByUserna(String username);
+    public Logins findByUsuario(String username);
 }

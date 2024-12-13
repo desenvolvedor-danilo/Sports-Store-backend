@@ -7,5 +7,5 @@ import com.dkmo.integrationnextjs.models.UserRegister;
 
 public interface RegisterRepository extends JpaRepository<UserRegister,Long>{
     UserRegister findByEmail(String user);
-    UserRegister findByUserna(String username);
+    UserRegister findByUsername(String username);
 }

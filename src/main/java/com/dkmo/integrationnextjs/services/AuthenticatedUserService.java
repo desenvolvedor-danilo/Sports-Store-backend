@@ -6,6 +6,8 @@ import java.time.ZoneOffset;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,32 +17,37 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.dkmo.integrationnextjs.dto.LoginDto;
+import com.dkmo.integrationnextjs.dto.TokenDto;
 import com.dkmo.integrationnextjs.models.Logins;
 import com.dkmo.integrationnextjs.repository.LoginsRepository;
 @Service 
-public class AuthenticatedService implements UserDetailsService{
+public class AuthenticatedUserService implements UserDetailsService{
    @Autowired
     private LoginsRepository repository;
+
     
     @Value("key.auth.token")
-    private String key;
-    
-    
+    private String key;    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByEmail(username);
     }
-    public String getToken(LoginDto loginDto){
+    public TokenDto getToken(LoginDto loginDto){
         Logins user = repository.findByEmail(loginDto.email());
-        return setToken(user);
-    }
-       public String setToken(Logins user){
+        return TokenDto.
+                builder()
+                .token(setToken(user, 1))
+                .refreshToken(setToken(user, 72))
+                .build();                
+            }
+            
+       public String setToken(Logins user,Integer expirationAt){
         try {
             Algorithm algorithm = Algorithm.HMAC256(key);
             String token = JWT.create()
             .withIssuer("integration-nextjs")
             .withSubject(user.getEmail())
-            .withExpiresAt(getDateExpirated())
+            .withExpiresAt(getDateExpirated(expirationAt))
             .sign(algorithm);
             return token;
 
@@ -48,8 +55,9 @@ public class AuthenticatedService implements UserDetailsService{
             throw new RuntimeException("Error to the create token "+e.getMessage());
         }
     }
-    private Instant getDateExpirated(){
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+    
+    private Instant getDateExpirated(Integer getDateExpirated){
+        return LocalDateTime.now().plusHours(getDateExpirated).toInstant(ZoneOffset.of("-03:00"));
     }
     public String validateToken(String token){
         try {
@@ -61,6 +69,17 @@ public class AuthenticatedService implements UserDetailsService{
         } catch (JWTVerificationException e) {
             return "";
         }
+    }
+    public TokenDto refreshTokenJWT(String refresh){
+        String login = validateToken(refresh);
+        Logins user = repository.findByEmail(login);
+        var authentication = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return TokenDto.
+        builder()
+        .token(setToken(user, 1))
+        .refreshToken(setToken(user, 72))
+        .build();
     }
     
 }

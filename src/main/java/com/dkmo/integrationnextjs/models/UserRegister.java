@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,9 +25,9 @@ public class UserRegister{
     @Column(nullable = false)
     private String name;
     @Column(nullable = false,unique = true)
-    private String userna;
+    private String username;
     @Column(nullable = false)
-    private String passwor;
+    private String password;
     @Column(nullable = false,unique = true)
     private String cpf;
     @Column(nullable = false)
@@ -39,6 +40,8 @@ public class UserRegister{
     private String localidade;
     @Column(nullable = false)
     private String uf;
+    @OneToOne(mappedBy = "userRegister")
+    private Logins logins;
     private String complemento;    
     
 }

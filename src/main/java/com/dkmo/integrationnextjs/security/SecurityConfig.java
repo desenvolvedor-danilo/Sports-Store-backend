@@ -12,13 +12,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.dkmo.integrationnextjs.filters.Filter;
+
+import com.dkmo.integrationnextjs.filters.UserFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
-    private Filter filter;
+    private UserFilter filter;
+    @Autowired
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
         return http
@@ -34,6 +36,9 @@ public class SecurityConfig {
         .requestMatchers("/h2-console/**").permitAll()
         .requestMatchers(HttpMethod.GET,"/user/verify").permitAll()
         .requestMatchers(HttpMethod.GET,"/user/get-token").permitAll()
+        .requestMatchers(HttpMethod.POST,"/user/refresh-token").permitAll()
+        .requestMatchers(HttpMethod.POST,"/admin/register").permitAll()
+        .requestMatchers(HttpMethod.POST,"/admin/login").permitAll()
         .anyRequest()
         .authenticated())
         .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

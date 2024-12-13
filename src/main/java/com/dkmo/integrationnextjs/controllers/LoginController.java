@@ -13,40 +13,79 @@ import com.dkmo.integrationnextjs.dto.LoginDto;
 import com.dkmo.integrationnextjs.dto.RequestRegisterDto;
 import com.dkmo.integrationnextjs.dto.ResponseConfirmedDto;
 import com.dkmo.integrationnextjs.dto.ResponseDto;
-import com.dkmo.integrationnextjs.services.UserService;
+import com.dkmo.integrationnextjs.dto.TokenDto;
+import com.dkmo.integrationnextjs.models.UserRegister;
+import com.dkmo.integrationnextjs.services.EditInfoService;
+import com.dkmo.integrationnextjs.services.GetInfoAccountService;
+import com.dkmo.integrationnextjs.services.RedifinePasswordService;
+import com.dkmo.integrationnextjs.services.RefreshTokenService;
+import com.dkmo.integrationnextjs.services.RegisterService;
+import com.dkmo.integrationnextjs.services.LoginService;
+import com.dkmo.integrationnextjs.services.VerifiedCodeService;
+import com.dkmo.integrationnextjs.services.VerifiedEmailService;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user")
 public class LoginController {
     @Autowired
-    private UserService userService;
-
+    private RegisterService registerService;
+    @Autowired
+    private LoginService loginService;
+    @Autowired
+    private RefreshTokenService refreshTokenService;
+    @Autowired
+    private EditInfoService editInfoService;
+    @Autowired
+    private RedifinePasswordService redifinePasswordService;
+    @Autowired 
+    private GetInfoAccountService infoAccountService;
+    @Autowired
+    private VerifiedEmailService verifiedEmailService;
+    @Autowired
+    private VerifiedCodeService verifyCodeService;
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto body){
-        return userService.login(body);
+    public ResponseEntity<TokenDto> login(@RequestBody LoginDto body){
+        return loginService.login(body);
     }
     @PostMapping("/register")
     public ResponseEntity<ResponseDto> register(@RequestBody RequestRegisterDto body){
-       return userService.register(body);
+       return registerService.register(body);
     }
     @GetMapping("/confirm")
     public ResponseEntity<ResponseConfirmedDto> confirmEmail(@RequestParam(name = "code") String code){
-        return userService.confirmEmail(code);
+        return verifiedEmailService.confirmEmail(code);
     }
     @GetMapping("/redifine")
     public String redifinePassword(@RequestParam(name="email") String body){
-        return userService.redifinePassword(body);
+        return redifinePasswordService.redifinePassword(body);
     }
     @PutMapping("/reset")
     public ResponseEntity<String> reset(@RequestParam(name="email")String email, @RequestBody LoginDto password){
-        return userService.resetPassword(email,password);
+        return redifinePasswordService.resetPassword(email,password);
     }
     @GetMapping("/email")
     public ResponseEntity<String> verifyCode(@RequestParam(name="code") String code){
-        return userService.verifyCode(code);
+        return verifyCodeService.verifyCode(code);
     }    
     @GetMapping ("/get-users")
     public ResponseEntity<String> getUsers(@RequestParam(name = "email") String email){
-        return userService.getUsers(email);
+        return infoAccountService.getUsers(email);
     }
+    @GetMapping("userinfo")
+    public UserRegister getInfoUsers(@RequestParam(name = "email")String email){
+        return infoAccountService.getInfoUsers(email);
+    }
+    @PutMapping("edit-info")
+    public ResponseEntity<String> editInfo(@RequestBody RequestRegisterDto user){
+        return editInfoService.editInfo(user);
+    }
+    @PutMapping("edit-address")
+    public ResponseEntity<String> editAddress(@RequestBody RequestRegisterDto userAddress){
+        return editInfoService.editAddress(userAddress);
+    }
+    @PostMapping("refresh-token")
+    public TokenDto refreshToken(@RequestParam(name = "token") String refresh){
+        return refreshTokenService.refreshToken(refresh);
+    }
+
 }

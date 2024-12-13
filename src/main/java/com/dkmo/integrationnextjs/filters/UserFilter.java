@@ -8,17 +8,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.dkmo.integrationnextjs.models.Logins;
+
 import com.dkmo.integrationnextjs.repository.LoginsRepository;
-import com.dkmo.integrationnextjs.services.AuthenticatedService;
+import com.dkmo.integrationnextjs.services.AuthenticatedUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class Filter extends OncePerRequestFilter{
+public class UserFilter extends OncePerRequestFilter{
     @Autowired
-    private AuthenticatedService authenticatedService;
+    private AuthenticatedUserService authenticatedService;
     @Autowired
     private LoginsRepository registerRepository;
     @Override
