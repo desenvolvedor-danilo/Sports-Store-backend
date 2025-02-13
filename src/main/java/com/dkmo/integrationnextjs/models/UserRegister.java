@@ -16,7 +16,7 @@ import lombok.ToString;
 @Table(name = "TB_USERS")
 public class UserRegister{
     
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "USER_ID")
     private long id;

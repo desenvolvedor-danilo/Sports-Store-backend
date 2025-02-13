@@ -36,8 +36,8 @@ public class AuthenticatedUserService implements UserDetailsService{
         Logins user = repository.findByEmail(loginDto.email());
         return TokenDto.
                 builder()
-                .token(setToken(user, 1))
-                .refreshToken(setToken(user, 72))
+                .token(setToken(user, 72))
+                .refreshToken(setToken(user, 1))
                 .build();                
             }
             

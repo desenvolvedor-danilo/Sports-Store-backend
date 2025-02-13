@@ -21,4 +21,10 @@ public class UserAuthenticated {
         TokenDto token = authenticatedService.getToken(body);
         return token;
     }
+    public String getTokenAcess(LoginDto body){
+        var userAutenticationToken = new UsernamePasswordAuthenticationToken(body.email(), body.password());
+        authenticationManager.authenticate(userAutenticationToken);
+        TokenDto token = authenticatedService.getToken(body);
+        return token.token();
+    }
 }

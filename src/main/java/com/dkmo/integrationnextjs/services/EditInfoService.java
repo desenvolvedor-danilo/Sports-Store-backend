@@ -23,10 +23,10 @@ private LoginsRepository loginsRepository;
         Logins userLogins = loginsRepository.findByEmail(user.email());
         userRegistered.setName(user.name());
         userRegistered.setUsername(user.username());
-        userLogins.setName(user.name());
-        userLogins.setUsuario(user.username());
-        loginsRepository.save(userLogins);
         registerRepository.save(userRegistered);
+        userLogins.setName(userRegistered.getName());
+        userLogins.setUsuario(userRegistered.getUsername());
+        loginsRepository.save(userLogins);
         return ResponseEntity.ok().body("Alterado com sucesso");
     }
 

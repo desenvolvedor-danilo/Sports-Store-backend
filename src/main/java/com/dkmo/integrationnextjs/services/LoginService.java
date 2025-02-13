@@ -23,10 +23,13 @@ public class LoginService
     @Override
     public ResponseEntity<TokenDto> login(LoginDto body) {
         Logins user = loginsRepository.findByEmail(body.email());
-        if (user == null) {
-            return ResponseEntity.badRequest().build();
+        if (user != null && user.isVerifiedAccount()) {
+            user.setToken(auth.getTokenAcess(body));
+            loginsRepository.save(user);
+            return ResponseEntity.ok().body(auth.getScope(body));
+            
         }
-
-        return ResponseEntity.ok().body(auth.getScope(body));
+        return ResponseEntity.badRequest().build();
+        
     }
 }

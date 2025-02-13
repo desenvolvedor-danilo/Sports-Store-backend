@@ -1,4 +1,5 @@
 package com.dkmo.integrationnextjs.models;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,13 +9,22 @@ import lombok.Data;
 @Entity
 @Data
 public class Products {
+
+@GeneratedValue(strategy = GenerationType.SEQUENCE)
 @Id
-@GeneratedValue(strategy = GenerationType.AUTO)
-private long id;
-private String pathNamePhoto;
-private String nameProduct;
-private int price;
-private int newPrice;
-private int[] rangeLenght;
-    
+private Long id;
+@Column(nullable = false,unique = true,length = 10)
+private Long codigo;
+private String categoria;
+private String nomeImagem;
+private String nome;
+private String edicao;
+private double precoAntigo;
+private double precoNovo;
+private double desconto;
+private double parcelado;
+private double valorParcela;
 }
+
+
+  
