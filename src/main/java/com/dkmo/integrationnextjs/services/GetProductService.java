@@ -27,4 +27,12 @@ public class GetProductService {
         }
         return ResponseEntity.badRequest().build();
     }
+    public ResponseEntity<List<Products>> getProductsForCategory(String categoria){
+        List<Products> products = productsRepository.findByCategoria(categoria);
+        return ResponseEntity.ok().body(products);
+    }
+    public ResponseEntity<List<Products>> getProductsForKeyWord(String key){
+        List<Products> products = productsRepository.findByNomeContaining(key);
+        return ResponseEntity.ok().body(products);
+    }
 }
