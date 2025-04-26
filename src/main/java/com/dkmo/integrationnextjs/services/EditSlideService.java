@@ -10,7 +10,6 @@ import com.dkmo.integrationnextjs.models.Slides;
 import com.dkmo.integrationnextjs.repository.SlidesRepository;
 import com.dkmo.integrationnextjs.utils.SlidesFilesSave;
 
-import jakarta.mail.Multipart;
 
 @Service
 public class EditSlideService implements IEditSlideService {

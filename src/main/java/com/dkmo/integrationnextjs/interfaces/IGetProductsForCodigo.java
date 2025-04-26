@@ -1,7 +1,9 @@
 package com.dkmo.integrationnextjs.interfaces;
 
+import org.springframework.http.ResponseEntity;
+
 import com.dkmo.integrationnextjs.models.Products;
 
 public interface IGetProductsForCodigo {
-public Products getProduct(Long codigo);
+public ResponseEntity<Products> getProduct(Long codigo);
 }

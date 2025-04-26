@@ -27,7 +27,7 @@ import lombok.Setter;
 public class Logins implements UserDetails{
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "logins_id")
     private Long id;
     private String email; 

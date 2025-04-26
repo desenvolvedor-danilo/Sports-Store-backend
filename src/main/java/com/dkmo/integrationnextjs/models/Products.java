@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class Products {
 
-@GeneratedValue(strategy = GenerationType.SEQUENCE)
+@GeneratedValue(strategy = GenerationType.IDENTITY)
 @Id
 private Long id;
 @Column(nullable = false,unique = true,length = 10)

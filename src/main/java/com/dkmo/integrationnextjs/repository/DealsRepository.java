@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.dkmo.integrationnextjs.models.Deal;
 
 public interface DealsRepository extends JpaRepository<Deal,Long>{
-
+public Deal findByCodigo(Long codigo);
 }

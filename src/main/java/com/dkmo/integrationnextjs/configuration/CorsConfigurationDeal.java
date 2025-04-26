@@ -11,7 +11,8 @@ public class CorsConfigurationDeal implements WebMvcConfigurer {
     @Override
 public void addCorsMappings(@NonNull CorsRegistry registry){
     registry.addMapping("/deal/**")
-    .allowedOrigins("http://localhost:3000")
+    // .allowedOrigins("http://localhost:3000")
+    .allowedOrigins("*")
     .allowedHeaders("*")
     .allowedMethods("GET","POST","PUT","DELETE");
 }

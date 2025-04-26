@@ -19,6 +19,10 @@ public class EditProductService implements IEditService{
     public ResponseEntity<Products> editProdutoService(ProductDto productDto) {
         Products products = productsRepository.findByCodigo(productDto.codigo());
         if (products != null) {
+            double desconto = 100-productDto.precoNovo()/productDto.precoAntigo()*100;
+            double valorParcela =  productDto.precoNovo()/productDto.parcelado();
+            products.setDesconto(desconto);
+            products.setValorParcela(valorParcela);
             BeanUtils.copyProperties(productDto, products);
             productsRepository.save(products);
             return ResponseEntity.ok().body(products);

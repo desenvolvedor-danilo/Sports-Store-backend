@@ -1,6 +1,8 @@
 package com.dkmo.integrationnextjs.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.dkmo.integrationnextjs.interfaces.IGetProductsForCodigo;
@@ -13,12 +15,12 @@ public class GetProdutcsForCodigo implements IGetProductsForCodigo {
     private ProductsRepository productsRepository;
     
     @Override
-    public Products getProduct(Long codigo){
+    public ResponseEntity<Products> getProduct(Long codigo){
         Products product = productsRepository.findByCodigo(codigo);
         if(product!=null){
-            return product;
+            return ResponseEntity.ok(product);
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
     
 }
